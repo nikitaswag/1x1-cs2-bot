@@ -3,6 +3,9 @@ import  aiogram
 from aiogram import Router,F
 from keyboards.inline import inline_kb, case_o_chek, case_battle, case_r_chek, case_i_chek, case_drop
 from aiogram.types import CallbackQuery
+import  sqlite3
+from database import select_balance
+from aiogram.types import Message
 
 
 callbacks_router = Router()
@@ -44,6 +47,8 @@ async def get_case_o(callback: CallbackQuery):
     await callback.message.delete(text=f'Ваш дроп🔮: {random.randint(1, 10000)}', reply_markup=case_drop)
     await callback.message.answer(text=f'Ваш дроп🔮: {random.randint(1, 10000)}', reply_markup=case_drop)
 
+
+
 #@callbacks_router.callback_query(F.data == "sell")
 #async def get_case_o(callback: CallbackQuery):
  #   await callback.message.answer(text="скин успешно продан! средсва занесены на баланс.")
@@ -61,6 +66,17 @@ async def get_drop(callback: CallbackQuery):
         await callback.message.edit_text(text="скин успешно продан! средсва занесены на баланс.")
     else:
         await callback.message.edit_text(text="скин занесен в профиль")
+    await callback.answer()
+
+
+@callbacks_router.callback_query(F.data.in_(["ezmo","noy"]))
+async def get_drop(callback: CallbackQuery):
+    if callback.data == "ezmo":
+        await callback.message.edit_text(text="успешно")
+        select_balance(Message.from_user.id)
+        await callback.message.edit_text(text="успешно")
+    else:
+        await callback.message.edit_text(text="отменено")
     await callback.answer()
 #@callbacks_router.callback_query(F.data == "")
 

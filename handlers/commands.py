@@ -1,15 +1,17 @@
 from aiogram import Router, F
 from aiogram.types import Message
 from aiogram.filters import Command
+
+from database import add_user
 from keyboards.inline import inline_kb
 from keyboards.reply import menu_keyboard
-from keyboards.inline import case_battle, buy
+from keyboards.inline import case_battle
 #from handlers.callback import
 
 win =0
 matches =0
 win_money=0
-money=0
+
 winstreak=0
 
 command_router = Router()
@@ -18,12 +20,12 @@ command_router = Router()
 async def command_start_handler(message: Message) -> None:
     await message.answer(f'игрок {message.from_user.first_name}                 \n'
                          f'\n'
-                         f'баланс {money}₽\n'
+                         f'баланс \n'
                          f'\n'
-                         f'побед: {win}                                      \n'
-                         f'максимальный винстрик: {winstreak}🔥\n'
-                         f'всего матчей: {matches}                         \n'
-                         f'призовые: {win_money}₽                          \n'
+                         f'побед:                                       \n'
+                         f'максимальный винстрик: 🔥\n'
+                         f'всего матчей:                          \n'
+                         f'призовые: ₽                          \n'
                          f'\n'  
                          f'/skins')
 
@@ -45,16 +47,16 @@ async def command_start_handler(message: Message) -> None:
                          f'\n'
                          f' Решаем любые вопросы')
 
-@command_router.message(F.text == "Пополнить баланс 💸")
-async def give_money(message: Message) -> None:
-    await message.answer("введите сумму которую хотите пополнить")
-    try:
-        if message >= 30:
-            await message.answer(f'вы готовы оплатить сделку стоимостью{message}₽?', reply_markup=buy)
-        else:
-            await message.answer("введите корректную сумму больше чем 30₽!")
-    except:
-        await message.answer("некорректная сумма платежа!")
+#@command_router.message(F.text == "Пополнить баланс 💸")
+#async def give_money(message: Message) -> None:
+ #   await message.answer("введите сумму которую хотите пополнить")
+ #   try:
+    #    if message >= 30:
+ #           #await message.answer(f'вы готовы оплатить сделку стоимостью{message}₽?', reply_markup=buy)
+  #      else:
+  #          await message.answer("введите корректную сумму больше чем 30₽!")
+ #   except:
+  #     await message.answer("некорректная сумма платежа!")
 
 
 
@@ -69,6 +71,9 @@ async def command_start_handler(message: Message) -> None:
                          f'❗️Чтобы продолжить, выбери команду на клавиатуре\n'
                          f'\n'
                          f'или используйте меню /menu',reply_markup=menu_keyboard)
+    add_user(message.from_user.id,0,0,0)
+
+
 
 @command_router.message(Command("about"))
 async def command_start_handler(message: Message) -> None:

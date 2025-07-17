@@ -40,9 +40,9 @@ case_drop = InlineKeyboardMarkup(
         [InlineKeyboardButton(text="Добавить в профиль➕", callback_data="add")]
     ]
 )
-buy = InlineKeyboardMarkup(
+buyy = InlineKeyboardMarkup(
     inline_keyboard=[
-        [InlineKeyboardButton(text="Отменить сделку ❌", callback_data="sell")],
-        [InlineKeyboardButton(text="Оплатить✅", callback_data="add")]
+        [InlineKeyboardButton(text="Отменить сделку ❌", callback_data="noy")],
+        [InlineKeyboardButton(text="Оплатить✅", callback_data="ezmo")]
     ]
 )
