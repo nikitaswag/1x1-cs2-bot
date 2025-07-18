@@ -1,8 +1,8 @@
 from aiogram import Router, F
 from aiogram.types import Message
 from aiogram.filters import Command
-
-from database import add_user
+from database import select_balance
+from database import add_user, select_balance
 from keyboards.inline import inline_kb
 from keyboards.reply import menu_keyboard
 from keyboards.inline import case_battle
@@ -20,7 +20,7 @@ command_router = Router()
 async def command_start_handler(message: Message) -> None:
     await message.answer(f'игрок {message.from_user.first_name}                 \n'
                          f'\n'
-                         f'баланс \n'
+                         f'баланс {select_balance(message.from_user.id)}\n'
                          f'\n'
                          f'побед:                                       \n'
                          f'максимальный винстрик: 🔥\n'
@@ -31,7 +31,7 @@ async def command_start_handler(message: Message) -> None:
 
 @command_router.message(F.text == "Пригласить соперника⚔️")
 async def command_start_handler(message: Message) -> None:
-    await message.answer("строго")
+    await message.answer("функция недоступна")
 
 @command_router.message(F.text == "Кейсы 🎰")
 async def command_start_handler(message: Message) -> None:
@@ -60,17 +60,13 @@ async def command_start_handler(message: Message) -> None:
 
 
 
-@command_router.message(F.text == "Вывод средств 💰")
-async def command_start_handler(message: Message) -> None:
-    await message.answer("строго")
 
 @command_router.message(Command("start"))
 async def command_start_handler(message: Message) -> None:
     await message.answer(f'БОТ ЕЩЕ НЕ ГОТОВ!!!!✨ Добро пожаловать {message.from_user.first_name}!\n '
                          f'Здесь можно зарабатывать выигрывая дуэли в Conter-Strike 2\n'
                          f'❗️Чтобы продолжить, выбери команду на клавиатуре\n'
-                         f'\n'
-                         f'или используйте меню /menu',reply_markup=menu_keyboard)
+                         f'',reply_markup=menu_keyboard)
     add_user(message.from_user.id,0,0,0)
 
 

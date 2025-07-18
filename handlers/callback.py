@@ -4,8 +4,10 @@ from aiogram import Router,F
 from keyboards.inline import inline_kb, case_o_chek, case_battle, case_r_chek, case_i_chek, case_drop
 from aiogram.types import CallbackQuery
 import  sqlite3
-from database import select_balance
+from database import select_balance,popoln
 from aiogram.types import Message
+from aiogram.fsm.context import FSMContext
+
 
 
 callbacks_router = Router()
@@ -70,13 +72,15 @@ async def get_drop(callback: CallbackQuery):
 
 
 @callbacks_router.callback_query(F.data.in_(["ezmo","noy"]))
-async def get_drop(callback: CallbackQuery):
+async def get_drop(callback: CallbackQuery,state: FSMContext):
+    await callback.answer()
     if callback.data == "ezmo":
         await callback.message.edit_text(text="успешно")
-        select_balance(Message.from_user.id)
-        await callback.message.edit_text(text="успешно")
+        data = await state.get_data()
+        popoln(callback.from_user.id, int(data['money']))
+        return
     else:
         await callback.message.edit_text(text="отменено")
-    await callback.answer()
+        return
 #@callbacks_router.callback_query(F.data == "")
 

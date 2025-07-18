@@ -32,3 +32,11 @@ def select_balance(user_id):
     where Id = ?
     ''',(user_id,))
     return a.fetchall()
+
+def popoln(user_id, money):
+    a = cursor.execute('''
+    UPDATE users
+    SET balance = balance + ?
+    WHERE Id = ?
+    ''',(user_id,money))
+    conn.commit()
